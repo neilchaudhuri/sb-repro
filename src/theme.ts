@@ -3,7 +3,7 @@ import { createBreakpoints } from "@chakra-ui/theme-tools"
 import { Button } from "./button/ButtonTheme"
 import defaultTheme from "@chakra-ui/theme"
 
-export default extendTheme({
+export const theme = extendTheme({
 	initialColorMode: "light",
 	useSystemColorMode: false,
 	breakpoints: createBreakpoints({
@@ -138,7 +138,7 @@ export default extendTheme({
 		},
 	},
 	components: {
-		Button,
+		Button
 	},
 })
 
@@ -146,3 +146,5 @@ export default extendTheme({
 delete defaultTheme.colors
 // @ts-ignore
 delete defaultTheme.fonts
+
+export default theme

@@ -1,20 +1,32 @@
 {
-  "name": "repro",
-  "author": "Neil Chaudhuri",
-  "description": "Issue 16252",
+  "name": "@csm/react-component-library",
+  "author": "Consular System Modernization",
+  "description": "Consular One Design System (C1DS) React Component Library (RCL) for user interfaces consistent with UX specifications of the Consular One brand.",
   "version": "3.0.0",
+  "c1ds": "1.2",
+  "keywords": [
+    "c1ds",
+    "Consular One",
+    "rcl",
+    "CSM",
+    "css",
+    "react",
+    "ux",
+    "ui"
+  ],
   "license": "UNLICENSED",
   "scripts": {
     "clean": "rimraf dist",
     "dev": "vite",
-    "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
+    "build-vite": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest --coverage",
     "test:basic": "jest",
     "typecheck": "tsc --p tsconfig.eslint.json --skipLibCheck --sourceRoot src --noEmit",
     "lint": "eslint src --ext=ts,tsx",
-    "package": "npm run clean && npm run build && cpy .npmignore dist && npm pack"
+    "package": "npm run clean && npm run build-vite && cpy .npmignore dist && npm pack",
+    "build": "npm run package && build-storybook"
   },
   "prettier": {
     "printWidth": 130,
@@ -32,8 +44,8 @@
   "jest": {
     "testEnvironment": "jest-environment-jsdom",
     "moduleNameMapper": {
-      ".+\\.(css|styl|less|sass|scss)$": "identity-obj-proxy",
-      ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/file-mock.js",
+      ".+\\.(css|styl|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+      ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.svg": "<rootDir>/__mocks__/svgrMock.tsx"
     },
     "modulePathIgnorePatterns": [
@@ -43,6 +55,7 @@
     "collectCoverageFrom": [
       "**/src/**/*.{jsx,tsx,ts}",
       "!**/__mocks__/*.*",
+      "!**/__stories__/*.*",
       "!**/src/custom.d.ts",
       "!**/src/index.ts"
     ],
@@ -57,8 +70,7 @@
     "@emotion/styled": "^11.3.0",
     "@types/cleave.js": "^1.4.4",
     "cleave.js": "^1.6.0",
-    "date-fns-timezone": "^0.1.4",
-    "date-fns-tz": "^1.1.6",
+    "date-fns": "^2.25.0",
     "downshift": "^6.1.7",
     "framer-motion": "^4.1.17",
     "np": "^7.5.0",
@@ -72,20 +84,25 @@
     "timezones-list": "^1.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.5",
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.8",
+    "@babel/preset-react": "^7.14.5",
     "@reach/router": "^1.3.4",
     "@rollup/plugin-eslint": "^8.0.1",
     "@rollup/plugin-url": "^6.1.0",
-    "@storybook/addon-a11y": "^6.3.9",
-    "@storybook/addon-essentials": "^6.3.9",
-    "@storybook/addon-links": "^6.3.9",
-    "@storybook/react": "^6.3.9",
+    "@storybook/addon-a11y": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/addons": "^6.3.12",
+    "@storybook/react": "^6.3.12",
     "@storybook/testing-react": "0.0.22",
+    "@storybook/theming": "^6.3.12",
     "@svgr/core": "^5.5.0",
     "@svgr/rollup": "^5.5.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.0",
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.7.1",
     "@types/react": "^17.0.24",
     "@types/react-datepicker": "^4.1.4",
@@ -99,6 +116,7 @@
     "babel-loader": "^8.2.2",
     "cpy": "^8.1.2",
     "cpy-cli": "^3.1.1",
+    "date-fns-tz": "^1.1.6",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest-dom": "^3.9.0",
@@ -113,10 +131,9 @@
     "react-test-renderer": "^17.0.2",
     "rollup-plugin-postcss": "^3.1.8",
     "rollup-plugin-sourcemaps": "^0.6.3",
-    "rollup-plugin-svg": "^2.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-ts": "^1.4.0",
-    "storybook-builder-vite": "0.0.12",
+    "storybook-builder-vite": "0.0.13",
     "tslib": "^2.3.0",
     "typescript": "^4.4.2",
     "vite": "^2.6.1",
@@ -127,6 +144,7 @@
   "files": [
     "dist"
   ],
+  "types": "./dist/index.d.ts",
   "main": "./dist/components.umd.js",
   "module": "./dist/components.es.js",
   "exports": {
@@ -134,5 +152,13 @@
       "import": "./dist/components.es.js",
       "require": "./dist/components.umd.js"
     }
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run typecheck && npm run lint"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://nexus.ca.state.sbu/repository/CSM_NPM_Repo/"
   }
 }

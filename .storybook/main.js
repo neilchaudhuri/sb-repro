@@ -9,7 +9,6 @@ module.exports = {
 			name: "@storybook/addon-essentials",
 			options: {
 				backgrounds: false,
-				controls: false,
 			},
 		},
 		"@storybook/addon-a11y",
@@ -20,6 +19,8 @@ module.exports = {
 	viteFinal: async config => {
 		return {
 			...config,
+			// Configure build-storybook to use relative asset paths
+			base: "./",
 			plugins: [
 				svgPlugin({
 					defaultExport: "component",
@@ -29,8 +30,14 @@ module.exports = {
 			],
 			optimizeDeps: {
 				...config.optimizeDeps,
+				include: [
+					'react-element-to-jsx-string',
+					'@emotion/react',
+					'@emotion/styled',
+					...config.optimizeDeps.include
+				],
 				entries: [`${path.relative(config.root, path.resolve(__dirname, "../src"))}/**/__stories__/*.stories.@(ts|tsx)`],
-			},
+			}
 		}
 	},
 }

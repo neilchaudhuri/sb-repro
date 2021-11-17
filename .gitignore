@@ -1,2 +1,11 @@
-# Project exclude paths
-/node_modules/
+*.log
+.DS_Store
+node_modules
+.cache
+dist
+.zip
+.tar.gz
+
+# Coverage directory used by Jest
+coverage
+storybook-static
